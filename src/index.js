@@ -4,18 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import store from "./redux/configureStore"
+import CustomRouter from "./customRouter";
+import { createBrowserHistory } from "history";
 
+const history = createBrowserHistory();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <CustomRouter history={history}>
      <App />
-    </BrowserRouter>
+    </CustomRouter>
   </Provider>
 );
 
