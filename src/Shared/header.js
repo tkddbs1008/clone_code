@@ -12,31 +12,37 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import IconButton from '@mui/material/IconButton';
 
+//RRD
+import { useNavigate } from 'react-router-dom';
 
 const Header = (props) => {
+
+    const nav = useNavigate();
+
+
     return (
         <Boxx>
             <ImageButton>
-                <ImageSrc/>
+                <ImageSrc onClick={() => nav('/')}/>
             </ImageButton>
-            <div style={{marginLeft: "auto"}}>
+            <div style={{marginLeft: "auto",}}>
                 <IconButton>
-                    <HomeOutlinedIcon/>
+                    <HomeOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
-                    <SendOutlinedIcon/>
+                    <SendOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
-                    <AddBoxOutlinedIcon/>
+                    <AddBoxOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
-                    <ExploreOutlinedIcon/>
+                    <ExploreOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
-                    <FavoriteBorderIcon/>
+                    <FavoriteBorderIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
-                    <CircleOutlinedIcon/>
+                    <CircleOutlinedIcon onClick={()=> nav('/profile/1')} sx={{color: "black"}}/>
                 </IconButton>
             </div>
         </Boxx>
