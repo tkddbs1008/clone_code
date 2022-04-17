@@ -9,32 +9,37 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import IconButton from '@mui/material/IconButton';
 import Comment from '../components/comment';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import { useNavigate, useParams } from 'react-router-dom';
 
-//
+//components
+import EditModal from '../components/EditModal';
+
 
 const ProfilePage = (props) => {
-    const [values, setValues] = React.useState();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
-    const handleChange = (prop) => (event) => {
-    setValues(event.target.value);
+  const param = useParams();
+  const user = param.user
+  const post = param.post
+  const nav = useNavigate();
+  const [CommentData, setComment] = React.useState();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    nav(`/profile/${user}/`);
+    setOpen(false);
+  }
+
+  const handleChange = (event) => {
+  setComment(event.target.value);
     };
 
     return (
         <div>
             <Header/>
             <Boxx>
-                <header style={{display: "flex"}}>
+                <header>
                     <div>
                         <ProfileImg/>
                     </div>
@@ -42,33 +47,18 @@ const ProfilePage = (props) => {
                         <grid>
                             <h1>Username</h1>
                              <div>
-                                <Button onClick={handleOpen}>Open modal</Button>
-                                <Modal
-                                    open={open}
-                                    onClose={handleClose}
-                                    aria-labelledby="modal-modal-title"
-                                    aria-describedby="modal-modal-description"
-                                >
-                                    <Box sx={style}>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Text in a modal
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                                    </Typography>
-                                    </Box>
-                                </Modal>
+                                <Button>Edit profile</Button>
                             </div>
                         </grid>
                     </div>
                 </header>
-                <ImageList sx={{ maxWidth: 975 }} cols={3} gap={20}>
-                    {itemData.map((item) => (
-                        <ImageListItem key={item.img}>
-                            <ImageButton  onClick={handleOpen}>
+                <ImageList sx={{ maxWidth: 970 }} cols={3} gap={40}>
+                    {itemData.map((item, idx) => (
+                        <ImageListItem key={item.idx}>
+                            <ImageButton onClick={() => {nav(`/profile/${user}/${idx}`); handleOpen()} }>
                                 <img
-                                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                src={`${item.img}?w=293&h=293&fit=crop&auto=format`}
+                                srcSet={`${item.img}?w=293&h=293&fit=crop&auto=format&dpr=2 2x`}
                                 alt={item.title}
                                 loading="lazy"
                                 />
@@ -85,16 +75,14 @@ const ProfilePage = (props) => {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                    <PostImg>
-
-                    </PostImg>
+                    <PostImgContainer>
+                      <PostImg style={{backgroundImage: `url(${itemData[post]?.img})`}}/>
+                    </PostImgContainer>
                     <PostContent>
                         <PostHeader>
                             <CommentImg/>
                             <Commentname>username</Commentname>
-                            <IconButton sx={{marginLeft: "auto", marginRight: "13px"}}>
-                                <MoreHorizIcon />
-                            </IconButton>
+                            <EditModal/>
                         </PostHeader>
                         <Comment/>
                         <Comment/>
@@ -115,6 +103,7 @@ const ProfilePage = (props) => {
     );
 }
 
+
 const Send = styled('button') ({
 border: "0px",
 background: "transparent",
@@ -123,7 +112,6 @@ color: "#0095f6",
     cursor: "pointer",
     opacity: "80%"
 }
-
 })
 
 const CommentBox = styled('input') ({
@@ -147,11 +135,19 @@ borderRadius: '0px 5px 5px 0px',
 display: "inline-flex"
 };
 
-const PostImg = styled('div') ({
+const PostImgContainer = styled('div') ({
 width: "60%",
 height: "100%",
 backgroundColor: "black",
 margin: "0px",
+})
+
+const PostImg = styled('div') ({
+backgroundSize: "contain",
+backgroundPosition: "center",
+width: "100%",
+height: "100%",
+backgroundRepeat: "no-repeat",
 })
 
 const PostContent = styled('div') ({
@@ -185,7 +181,7 @@ const ProfileImg = styled('div') ({
 width: "150px",
 height: "150px",
 background: "#62676A",
-borderRadius: "75px"
+borderRadius: "75px",
 })
 
 const Boxx = styled(Box) ({

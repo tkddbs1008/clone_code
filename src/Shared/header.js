@@ -11,14 +11,35 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+//Image
+import InsertFile from '../images/InsertFile.PNG'
 
 //RRD
 import { useNavigate } from 'react-router-dom';
+import PostWrite from '../components/PostWrite';
+import { fontWeight } from '@mui/system';
 
 const Header = (props) => {
 
     const nav = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
+    const hidden = React.useRef(null);
+
+    const handleClick = (e) => {
+        hidden.current.click();
+    }
+
+    const handChange = (e) => {
+        const fileUploaded = e.target.files[0];
+        props.handleFile(fileUploaded);
+    }
 
     return (
         <Boxx>
@@ -32,7 +53,7 @@ const Header = (props) => {
                 <IconButton>
                     <SendOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={handleOpen}>
                     <AddBoxOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
                 <IconButton>
@@ -41,14 +62,54 @@ const Header = (props) => {
                 <IconButton>
                     <FavoriteBorderIcon sx={{color: "black"}}/>
                 </IconButton>
-                <IconButton>
-                    <CircleOutlinedIcon onClick={()=> nav('/profile/1')} sx={{color: "black"}}/>
+                <IconButton onClick={()=> nav('/profile/1')} sx={{color: "black"}}>
+                    <CircleOutlinedIcon />
                 </IconButton>
             </div>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+            <PostWrites>
+                <b style={{fontWeight: "500" }}>Create new post</b>
+            </PostWrites>
+            <Content>
+                <img alt='placehold' src={InsertFile} />
+                <p style={{fontSize: "21px"}}>Drag photos and videos here</p>
+                <input type="file" ref={hidden} id="fileUpload" style={{display: "none"}}/>
+                <Submit onClick={handleClick}>Select from computer</Submit>
+            </Content>
+            </Box>
+        </Modal>
         </Boxx>
+
     )
 }
 
+const Content = styled('div') ({
+display: "flex",
+justifyContent: "center",
+alignItems: "center",
+flexDirection: "column",
+})
+
+const Submit = styled('button') ({
+width: "157px",
+height: "30px",
+color: "white",
+backgroundColor: "#0095f6",
+border: "0px",
+borderRadius: "5px",
+'&:hover': {
+    cursor: "pointer"
+},
+'&:active': {
+    opacity: "0.7"
+}
+})
 const Boxx = styled(Box) ({
 borderBottom: "1px solid #e2e2e1",
 height: "60px",
@@ -74,5 +135,24 @@ backgroundSize: 'cover',
 backgroundPosition: 'center',
 backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png)`
 });
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "45%",
+  bgcolor: 'background.paper',
+  height: "82%",
+  borderRadius: "15px"
+};
+
+const PostWrites = styled('div') ({
+height: "42px",
+alignItems: "center",
+display: "flex",
+justifyContent: "center",
+borderBottom: "1px solid #e2e2e1"
+})
 
 export default Header;
