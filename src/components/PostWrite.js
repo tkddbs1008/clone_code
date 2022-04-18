@@ -5,22 +5,29 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
+import { actionsCreators as imageActions } from "../redux/modules/image";
 
 
 const PostEdit = (props) => {
 
+
+    const token = document.cookie.split('=')[1]
+
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
+    const [image, setImage] = React.useState();
     const [value, setValue] = React.useState();
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true);
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
     const Send = () => {
-        dispatch(postActions.updatePostDB())
+        dispatch(postActions.updatePostDB(props.postid, value, image, token))
     }
+
   return (
     <div>
         <EditButton onClick={handleOpen} >Edit</EditButton>
@@ -52,10 +59,29 @@ const PostEdit = (props) => {
                 </PostContent>
                 </div>
             </Box>
+
         </Modal>
     </div>
   );
 }
+
+
+
+const Submit = styled('button') ({
+width: "157px",
+height: "30px",
+color: "white",
+backgroundColor: "#0095f6",
+border: "0px",
+borderRadius: "5px",
+'&:hover': {
+    cursor: "pointer"
+},
+'&:active': {
+    opacity: "0.7"
+}
+})
+
 
 const EditButton = styled('button') ({
   width: "400px",

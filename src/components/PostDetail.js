@@ -9,7 +9,6 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import Comment from '../components/comment';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -40,9 +39,14 @@ const PostDetail = (props) => {
                         <EditModal {...props} />
                     </PostHeader>
                         <div>
-                        {props.comments.map((el, idx) => {
+                        {props?.comments?.map((el, idx) => {
                             return (
-                                <Comment {...el}/>
+                                <div key={idx} style={{height: "50px", display: "flex", marginTop: "13px"}}>
+                                    <CommentImg/>
+                                    <Commentname>{el.nickname}<CommentDate>{el.createdAt}</CommentDate></Commentname>
+                                    <Cmnt>{el.content}</Cmnt>
+                                    <button onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</button>
+                                </div>
                             )
                         })}
                         </div>
@@ -71,6 +75,18 @@ color: "#0095f6",
 }
 })
 
+const CommentDate = styled('span') ({
+fontSize: "12px",
+color: "#B7BBBD",
+padding: "0px",
+margin: "0px",
+marginTop: "10px"
+})
+
+const Cmnt = styled('p') ({
+fontSize: "15px",
+margin: "0px 3px 0px 5px"
+})
 
 
 const style = {

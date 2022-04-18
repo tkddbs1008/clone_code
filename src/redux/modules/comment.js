@@ -34,6 +34,18 @@ const addCommentDB = (postid, Comment) => {
     }
 }
 
+const deleteComment = (commentid) => {
+  console.log(commentid)
+  return function (dispatch, getState) {
+    apis
+                        .del(commentid)
+                        .then((res) => {
+
+                        }).catch((err) => {
+                          console.log(err)
+                        })
+  }
+}
 // const getComment = (Comment_info) => {
 //     return function (dispatch, getState,{history}){
 //         console.log('댓글요청 시작')
@@ -73,6 +85,7 @@ export default handleActions(
 const actionCreators = {
     addCommentDB,
     // getComment,
+    deleteComment,
   };
 
 export { actionCreators };

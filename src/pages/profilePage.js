@@ -9,7 +9,6 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import Comment from '../components/comment';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -92,8 +91,6 @@ const ProfilePage = (props) => {
                             <Commentname>username</Commentname>
                             <EditModal/>
                         </PostHeader>
-                        <Comment/>
-                        <Comment/>
                             <CommentWrite>
                                 <SentimentSatisfiedAltIcon sx={{marginLeft: "13px"}}/>
                                 <div style={{width: "100%"}}>

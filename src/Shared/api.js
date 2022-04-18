@@ -19,19 +19,19 @@ api.interceptors.request.use(function (config) {
 
 export const apis = {
 	// post
-	// add: (file) => api.post('/api/posts',file),
-	edit: (id, file) => api.put(`api/posts/${id}`, {file}),
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: () => api.get('/api/posts'),
-	join: (id) => api.put(`/api/posts/in/${id}`),
 	post: (id) => api.get(`/api/posts/${id}`, id),
+	fav: (id) => api.post(`/api/like/${id}`),
+	unfav: (id) => api.delete(`/api/like/${id}`),
+
 
 	// comment
 	addComment: (postid, content) => api.post('/api/comment', {
 		postid: postid,
 		content: content
 	}),
-	// delComment: (commentId) => api.delete(`/api/comments/${commentId}`),
+	del: (commentId) => api.delete(`/api/comment/${commentId}`),
 	// editComment: (content, commentId) =>
 	// 	api.put(`/api/comments/${commentId}`, content),
 

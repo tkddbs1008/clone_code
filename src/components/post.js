@@ -6,16 +6,19 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
 import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 import BookmarkBorderTwoToneIcon from "@mui/icons-material/BookmarkBorderTwoTone";
 import IconButton from "@mui/material/IconButton";
 import PostDetail from "./PostDetail";
-
+import { useDispatch } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const Post = (props) => {
 
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const detailOpen = () => {
@@ -28,7 +31,7 @@ const Post = (props) => {
           <div>
             <PostHeader>
               <CommentImg />
-              <Commentname>username</Commentname>
+              <Commentname>{props.user.nickname}</Commentname>
               <IconButton sx={{ marginLeft: "auto", marginRight: "13px" }}>
                 <MoreHorizIcon />
               </IconButton>
@@ -42,9 +45,15 @@ const Post = (props) => {
           </div>
           <div>
             <MiddleButtons>
-              <IconButton>
+              {props.myLike ?
+                <IconButton onClick={() => dispatch(postActions.unfavPost(props.postid))}>
+                  <FavoriteIcon/>
+                </IconButton>
+              :
+              <IconButton onClick={()=> dispatch(postActions.favPost(props.postid))}>
                 <FavoriteBorderTwoToneIcon />
               </IconButton>
+              }
               <IconButton onClick={detailOpen}>
                 <ChatBubbleOutlineTwoToneIcon />
               </IconButton>
@@ -58,19 +67,19 @@ const Post = (props) => {
           </div>
           <div>
             <LikeUsers>
-              <strong>username</strong>님 <strong>외 1명</strong>이 좋아합니다.
+              <strong>{props.user.nickname}</strong>님 <strong>외 1명</strong>이 좋아합니다.
             </LikeUsers>
           </div>
           <div>
             <LikeUsers>
-              <strong>username</strong> 내용
+              <strong>{props.user.nickname}</strong>{props.content}
             </LikeUsers>
           </div>
           <div>
-            <MoreComment>댓글 n개 모두 보기</MoreComment>
+            <MoreComment>댓글 {props.comments.length}개 모두 보기</MoreComment>
           </div>
           <div>
-            <PostDate>1일 전</PostDate>
+            <PostDate>{props.createdAt}</PostDate>
           </div>
         </Card>
         <PostDetail {...props} open={open} setOpen={setOpen} handleClose={handleClose}/>

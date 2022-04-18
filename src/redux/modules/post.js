@@ -62,24 +62,32 @@ const addPostDB = (content, image, token) => {
     }
 }
 
-const updatePostDB = (content, image) => {
+const updatePostDB = (postid, content, image, token) => {
+
+    console.log(postid, content, image, token)
+
     const file = new FormData();
 
     file.append("content", content);
-    file.append("image", image);
+    file.append("multipartFile", image);
 
-    return (dispatch, getState) => {
-      apis
-                    .edit(file)
-                    .then((res) =>{
-                        window.alert('수정 성공!!');
-                        dispatch(getPost(res.data.postList));
-                        history.replace('/');
-                    }).catch((err)=>{
-                        console.log('수정 실패!',err.response)
-                    })
-  }
-};
+    return function (dispatch, getState) {
+        axios.put(`http://13.209.10.125/api/posts/${postid}`, file, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            }
+        })
+                        .then((res) => {
+                                dispatch(addPost(res));
+                                history.push('/')
+                        })
+                        .catch((err) => {
+                            window.alert('로그인한 회원만 작성할 수 있습니다')
+                            console.log(err)
+                        })
+    }
+}
 
 const deletePostDB = (id) => {
     return function (dispatch, getState) {
@@ -89,6 +97,32 @@ const deletePostDB = (id) => {
                         // dispatch(deletePost())
                         window.location.reload()
                     }).catch((err) =>{
+                        console.log(err)
+                    })
+    }
+}
+
+const favPost = (id, post_data) => {
+
+    return function (dispatch, getState) {
+        apis
+                    .fav(id)
+                    .then((res) => {
+
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+    }
+}
+
+const unfavPost = (id, post_data) => {
+
+    return function (dispatch, getState) {
+        apis
+                    .unfav(id)
+                    .then((res) => {
+
+                    }).catch((err) => {
                         console.log(err)
                     })
     }
@@ -119,6 +153,8 @@ const actionCreators = {
     updatePostDB,
     getPostDB,
     deletePostDB,
+    favPost,
+    unfavPost,
 }
 
 export {actionCreators}
