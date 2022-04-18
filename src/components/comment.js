@@ -4,14 +4,18 @@ import { styled } from '@mui/material/styles';
 
 
 const Comment = (props) => {
-    return(
+
+    console.log(props)
+
+        return(
         <div style={{height: "50px", display: "flex", marginTop: "13px"}}>
             <CommentImg/>
-            <Commentname> username <CommentDate>1 day ago</CommentDate></Commentname>
-            <Cmnt> content </Cmnt>
+            <Commentname> username <CommentDate>{props.createdAt}</CommentDate></Commentname>
+            <Cmnt>{props.content}</Cmnt>
         </div>
     )
 }
+
 
 const CommentImg = styled('div') ({
 width: '32px',

@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = (props) => {
     const dispatch = useDispatch();
 
+    const token = document.cookie.split('=')[1]
     //게시물 정보
     const [ImgFile, setImgFile] = React.useState('')
     const [value, setValue] = React.useState();
@@ -56,7 +57,8 @@ const Header = (props) => {
     };
 
     const Send = () => {
-        dispatch(postActions.addPostDB(value, ImgFile))
+        dispatch(postActions.addPostDB(value, ImgFile, token))
+        handleClose();
     }
 
     return (

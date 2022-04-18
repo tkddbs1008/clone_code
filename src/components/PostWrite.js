@@ -1,50 +1,114 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { actionCreators as postActions } from "../redux/modules/post";
+import { useSelector, useDispatch } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 
 
+const PostEdit = (props) => {
 
-const PostWrite = (props) => {
-
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [value, setValue] = React.useState();
     const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
 
+    const Send = () => {
+        dispatch(postActions.updatePostDB())
+    }
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
+        <EditButton onClick={handleOpen} >Edit</EditButton>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={stylee}>
+                <PostWrites>
+                    <b style={{fontWeight: "500" }}>Create new post</b>
+                    <button onClick={Send}>Edit</button>
+                </PostWrites>
+                <div style={{display: "flex"}}>
+                <PostImgContainer style={{backgroundImage: `url(${props.imageUrl})`}}/>
+                <PostContent>
+                    <PostHeader>
+                    </PostHeader>
+                      <TextField
+                        id="standard-multiline-static"
+                        label="Multiline"
+                        multiline
+                        rows={4}
+                        value={value}
+                        variant="standard"
+                        onChange={handleChange}
+                    />
+                </PostContent>
+                </div>
+            </Box>
+        </Modal>
     </div>
   );
 }
 
+const EditButton = styled('button') ({
+  width: "400px",
+  border: "0px",
+  background: "white",
+  '&:hover': {
+    cursor: "pointer",
+  },
+  '&:active': {
+    background: "#e2e2e1"
+  }
+})
 
-const style = {
+const PostHeader = styled('div') ({
+width: "100%",
+height: "60px",
+display: "flex",
+alignItems: "center"
+})
+
+const PostWrites = styled('div') ({
+height: "42px",
+alignItems: "center",
+display: "flex",
+justifyContent: "center",
+borderBottom: "1px solid #e2e2e1"
+})
+
+const PostImgContainer = styled('div') ({
+minWidth: "350px",
+maxWidth: "50%",
+minHeight: "350px",
+maxHeight: "100%",
+backgroundColor: "black",
+backgroundSize: "contain",
+backgroundPosition: "center",
+backgroundRepeat: "no-repeat",
+margin: "0px",
+display: "flex"
+})
+
+const PostContent = styled('div') ({
+width: "300px",
+})
+
+const stylee = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: "80%",
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  height: "82%",
+  borderRadius: "15px"
 };
-
-export default PostWrite;
+export default PostEdit;

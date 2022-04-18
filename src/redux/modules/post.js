@@ -1,25 +1,31 @@
 import {createAction, handleActions} from "redux-actions"
 import {produce} from "immer"
-import { actionsCreators as imageActions } from "./image";
+// import { actionsCreators as imageActions } from "./image";
 import { apis } from "../../Shared/api"
 import history from "../../index"
+import axios from "axios";
 
 
 //action
 const ADD_POST = "ADD_POST";
 const GET_POST = "GET_POST";
+// const DELETE = "DELETE"
 
 //action creator
 const addPost = createAction(ADD_POST, (post) => ({post}));
 const getPost = createAction(GET_POST, (post_list) => ({post_list}));
+// const deletePost = createAction(DELETE, (post_id) => ({post_id}))
 
+
+
+//initialState
 const initialState = {
     list: [],
     is_loading: false,
 }
 
-//thunk
 
+//thunk
 const getPostDB = () => {
     return async function (dispatch, getState) {
         try {
@@ -31,17 +37,22 @@ const getPostDB = () => {
     }
 }
 
-const addPostDB = (content, image) => {
+const addPostDB = (content, image, token) => {
+
     const file = new FormData();
 
     file.append("content", content);
-    file.append("imageFile", image);
+    file.append("multipartFile", image);
 
     return function (dispatch, getState) {
-        apis
-                        .add(file)
-                        .then(() => {
-                                dispatch(addPost(content));
+        axios.post("http://13.209.10.125/api/posts", file, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            }
+        })
+                        .then((res) => {
+                                dispatch(addPost(res));
                                 history.push('/')
                         })
                         .catch((err) => {
@@ -70,6 +81,18 @@ const updatePostDB = (content, image) => {
   }
 };
 
+const deletePostDB = (id) => {
+    return function (dispatch, getState) {
+        apis
+                    .del(id)
+                    .then((res) => {
+                        // dispatch(deletePost())
+                        window.location.reload()
+                    }).catch((err) =>{
+                        console.log(err)
+                    })
+    }
+}
 
 export default handleActions({
     [ADD_POST]: (state, action) => produce(state, (draft) => {
@@ -78,20 +101,24 @@ export default handleActions({
     [GET_POST]: (state, action) => produce(state, (draft) => {
         draft.list.push(...action.payload.post_list)
         draft.list = draft.list.reduce((acc, cur) => {
-          if (acc.findIndex((a) => a.id === cur.id) === -1) {
+          if (acc.findIndex((a) => a.postid === cur.postid) === -1) {
             return [...acc, cur];
           } else {
-            acc[acc.findIndex((a) => a.id === cur.id)] = cur;
+            acc[acc.findIndex((a) => a.postid === cur.postid)] = cur;
             return acc;
           }
         }, []);
-    })
+    }),
+    // [DELETE]: (state, action) => produce(state, (draft) => {
+    //     draft.list = draft.list.filter((l) => l.postid !== action.payload.post_id);
+    // }),
 }, initialState)
 
 const actionCreators = {
     addPostDB,
     updatePostDB,
     getPostDB,
+    deletePostDB,
 }
 
 export {actionCreators}

@@ -1,4 +1,7 @@
 import React from "react";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { useDispatch } from "react-redux";
+import PostEdit from "./PostWrite";
 
 //MUI
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -9,11 +12,17 @@ import { styled } from '@mui/material/styles';
 
 
 
-const EditModal= () => {
 
+const EditModal= (props) => {
+
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const Delete = () => {
+      dispatch(postActions.deletePostDB(props.props.postid))
+    }
 
     return (
       <div  style={{marginLeft: "auto", marginRight: "13px"}}>
@@ -27,11 +36,11 @@ const EditModal= () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={{ width: 400, height: 450, margin: 'auto', background: "white", display: 'inline-flexbox', marginTop: "250px", borderRadius: "5px" }}>
-             <EditBox>
+             <EditBox onClick= {Delete}>
                <EditButton style={{borderRadius: "5px 5px 0px 0px"}}><p style={{color: "red", fontWeight: "700"}}>Delete</p></EditButton>
              </EditBox>
              <EditBox>
-               <EditButton >Edit</EditButton>
+               <PostEdit {...props}/>
              </EditBox>
              <EditBox>
                <EditButton >Hide like count</EditButton>
@@ -77,7 +86,8 @@ width: "400px",
 height: "49px",
 display: "flex",
 justifyContent: "center",
-borderBottom: "1px solid #e2e2e1"
+borderBottom: "1px solid #e2e2e1",
+alignItems: "center",
 })
 
 export default EditModal;

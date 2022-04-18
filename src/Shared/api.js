@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://3.34.144.108',
+    baseURL: 'http://13.209.10.125',
     headers: {
         'content-type': 'application/json;charset=UTF-8',
 		accept: 'application/json,',
@@ -19,9 +19,7 @@ api.interceptors.request.use(function (config) {
 
 export const apis = {
 	// post
-	add: (file) => api.post('/api/posts', {
-		file
-	}),
+	// add: (file) => api.post('/api/posts',file),
 	edit: (id, file) => api.put(`api/posts/${id}`, {file}),
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: () => api.get('/api/posts'),
@@ -29,10 +27,13 @@ export const apis = {
 	post: (id) => api.get(`/api/posts/${id}`, id),
 
 	// comment
-	addComment: (content) => api.post('/api/comments', content),
-	delComment: (commentId) => api.delete(`/api/comments/${commentId}`),
-	editComment: (content, commentId) =>
-		api.put(`/api/comments/${commentId}`, content),
+	addComment: (postid, content) => api.post('/api/comment', {
+		postid: postid,
+		content: content
+	}),
+	// delComment: (commentId) => api.delete(`/api/comments/${commentId}`),
+	// editComment: (content, commentId) =>
+	// 	api.put(`/api/comments/${commentId}`, content),
 
 	// user
 	login: (ID, PWD) => api.post('/user/login', { username: ID, password: PWD }),
