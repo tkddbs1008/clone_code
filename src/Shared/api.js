@@ -20,7 +20,9 @@ api.interceptors.request.use(function (config) {
 
 export const apis = {
 	// post
-	add: (contents) => api.post('/api/posts', contents),
+	add: (file) => api.post('/api/posts', {
+		file
+	}),
 	edit: (id, contents) => api.put(`api/posts/${id}`, contents),
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: () => api.get('/api/posts'),
@@ -36,12 +38,13 @@ export const apis = {
 		api.put(`/api/comments/${commentId}`, content),
 
 	// user
-	login: (id, pwd) => api.post('/user/login', { username: id, password: pwd }),
-	signup: (id, username, valueCheck) =>
+	login: (ID, PWD) => api.post('/user/login', { username: ID, password: PWD }),
+	signup: (ID, Nickname, PWD, Check) =>
 		api.post('/user/signup', {
-			username: id,
-			nickname: username,
-			password: valueCheck,
+			username: ID,
+			nickname: Nickname,
+			password: PWD,
+			passwordCheck: Check,
 		}),
 	loginCheck: () => api.get('/api/isLogin'),
 };

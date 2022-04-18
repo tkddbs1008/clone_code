@@ -1,7 +1,8 @@
 import React from 'react';
 
 import {useNavigate} from 'react-router-dom'
-
+import {useDispatch} from 'react-redux'
+import {actionCreators as userActions} from '../redux/modules/user'
 //element
 import TextInput from '../elements/TextInput'
 
@@ -15,9 +16,21 @@ import { styled } from '@mui/material/styles';
 
 
 const Login = (props) => {
-
+    const dispatch = useDispatch();
     const nav = useNavigate();
+    const [ID, setID] = React.useState('')
+    const [PWD, setPWD] = React.useState('')
 
+    const handleID = (e) => {
+        setID(e.target.value);
+    };
+     const handlePWD = (e) => {
+        setPWD(e.target.value);
+    };
+
+    const SignIn = () => {
+        dispatch(userActions.loginDB(ID, PWD))
+    }
     return (
         <Boxx>
             <Card sx={{border: "1px solid #e2e2e1", borderRadius: "0px"}}>
@@ -26,13 +39,13 @@ const Login = (props) => {
                         <ImageSrc onClick={() => nav('/')}/>
                     </ImageButton>
                     <Div>
-                        <TextInput label="ID" variant="filled"/>
+                        <TextInput label="ID" variant="filled" value={ID} onChange={handleID}/>
                     </Div>
                     <Div>
-                        <TextInput label="Password" variant="filled" type="password"/>
+                        <TextInput label="Password" variant="filled" type="password" value={PWD} onChange={handlePWD}/>
                     </Div>
                     <Div>
-                        <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained">Log in</Button>
+                        <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained" onClick={SignIn}>Log in</Button>
                     </Div>
                 </CardContent>
             </Card>

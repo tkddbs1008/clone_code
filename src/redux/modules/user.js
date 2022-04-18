@@ -19,12 +19,12 @@ const initialState = {
 
 
 //thunk
-const registerDB = (id, nickname, valueCheck) => {
+const registerDB = (ID, Nickname, PWD, Check) => {
     return function (dispatch, getState) {
         apis
-                .signup(id, nickname, valueCheck)
+                .signup(ID, Nickname, PWD, Check)
                 .then((res) => {
-
+                    history.push('/login')
                 })
                 .catch((err) => {
                     console.log(err)

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import {useNavigate} from 'react-router-dom'
-
+import {useDispatch} from 'react-redux'
+import {actionCreators as userActions} from '../redux/modules/user'
 //element
 import TextInput from '../elements/TextInput'
 
@@ -22,22 +23,33 @@ import FilledInput from '@mui/material/FilledInput';
 
 
 const Signup = (props) => {
-
+    const dispatch = useDispatch();
     const nav = useNavigate();
-
-    const [values, setValues] = React.useState({
+    const [ID, setID] = React.useState('')
+    const [Nickname, setNickname] = React.useState('')
+    const [PWD, setPWD] = React.useState('')
+    const [Check, setCheck] = React.useState({
         password: '',
         showPassword: false,
     });
 
+    const handleID = (e) => {
+        setID(e.target.value);
+    };
+    const handleName = (e) => {
+        setNickname(e.target.value);
+    };
+    const handlePWD = (e) => {
+        setPWD(e.target.value);
+    };
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setCheck({ ...Check, [prop]: event.target.value });
     };
 
     const handleClickShowPassword = () => {
-        setValues({
-            ...values,
-            showPassword: !values.showPassword,
+        setCheck({
+            ...Check,
+            showPassword: !Check.showPassword,
         });
     };
 
@@ -45,6 +57,9 @@ const Signup = (props) => {
         event.preventDefault();
     };
 
+    const SignUp = () => {
+        dispatch(userActions.registerDB(ID, Nickname, PWD, Check.password))
+    }
 
     return (
         <Boxx>
@@ -59,13 +74,13 @@ const Signup = (props) => {
                         </Side>
                     </Div>
                     <Div>
-                        <TextInput label="ID" variant="filled"/>
+                        <TextInput label="ID" variant="filled" value={ID} onChange={handleID}/>
                     </Div>
                     <Div>
-                        <TextInput label="Nickname" variant="filled"/>
+                        <TextInput label="Nickname" variant="filled" value={Nickname} onChange={handleName}/>
                     </Div>
                     <Div>
-                        <TextInput label="Password" variant="filled" type="password"/>
+                        <TextInput label="Password" variant="filled" type="password" value={PWD}  onChange={handlePWD}/>
                     </Div>
                     <Div>
                         <FormControl variant="filled">
@@ -79,8 +94,8 @@ const Signup = (props) => {
                                             backgroundColor: "transparent"
                                 },
                                     }}
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                type={Check.showPassword ? 'text' : 'password'}
+                                value={Check.password}
                                 onChange={handleChange('password')}
                                 endAdornment={
                                 <InputAdornment position="end">
@@ -90,7 +105,7 @@ const Signup = (props) => {
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"
                                     >
-                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {Check.showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                                 }
@@ -99,7 +114,7 @@ const Signup = (props) => {
                         </FormControl>
                     </Div>
                     <Div>
-                        <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained" >Sign up</Button>
+                        <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained" onClick={SignUp}>Sign up</Button>
                     </Div>
                 </CardContent>
             </Card>
