@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://13.209.155.82',
+    baseURL: 'http://3.34.144.108',
     headers: {
         'content-type': 'application/json;charset=UTF-8',
 		accept: 'application/json,',
@@ -17,18 +17,15 @@ api.interceptors.request.use(function (config) {
 });
 
 
-
 export const apis = {
 	// post
 	add: (file) => api.post('/api/posts', {
 		file
 	}),
-	edit: (id, contents) => api.put(`api/posts/${id}`, contents),
+	edit: (id, file) => api.put(`api/posts/${id}`, {file}),
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: () => api.get('/api/posts'),
 	join: (id) => api.put(`/api/posts/in/${id}`),
-	leave: (id) => api.put(`/api/posts/out/${id}`),
-	filter: (category) => api.get(`/api/category/${category}`, category),
 	post: (id) => api.get(`/api/posts/${id}`, id),
 
 	// comment
