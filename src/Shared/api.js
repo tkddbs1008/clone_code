@@ -21,10 +21,9 @@ export const apis = {
 	// post
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: (loadPost) => api.get(`/api/posts/${loadPost}`),
-	post: (id) => api.get(`/api/profile/${id}`, id),
+	myPost: (id) => api.get(`/api/profile/${id}`),
 	fav: (id) => api.post(`/api/like/${id}`),
 	unfav: (id) => api.delete(`/api/like/${id}`),
-	myPost: (id) => api.get(`/api/posts/${id}`),
 
 	// comment
 	addComment: (postid, content) => api.post('/api/comment', {
@@ -37,12 +36,11 @@ export const apis = {
 
 	// user
 	login: (ID, PWD) => api.post('/user/login', { username: ID, password: PWD }),
-	signup: (ID, Nickname, PWD, Check) =>
+	signup: (ID, Nickname, PWD) =>
 		api.post('/user/signup', {
 			username: ID,
 			nickname: Nickname,
 			password: PWD,
-			passwordCheck: Check,
 		}),
 	islogin: () => api.get('/api/islogin'),
 };

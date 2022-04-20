@@ -14,6 +14,7 @@ const Main = (props) => {
     const dispatch = useDispatch();
     const is_loading = useSelector((state) => state.post.is_loading);
     const post_list = useSelector((state) => state.post.list)
+
     React.useEffect(() => {
       dispatch(userActions.loginCheck())
     }, [])
@@ -32,7 +33,7 @@ const Main = (props) => {
     <React.Fragment>
       <Header />
       <InfinityScroll
-        callNext={() => dispatch(postActions.getPostDB(`${post_list.length}`))}
+        callNext={() => dispatch(postActions.getPostDB())}
         is_next={post_list.length ? true : false}
         loading={is_loading}
       >

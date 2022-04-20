@@ -20,10 +20,10 @@ const initialState = {
 
 //thunk
 
-const registerDB = (ID, Nickname, PWD, Check) => {
+const registerDB = (ID, Nickname, PWD) => {
     return function (dispatch, getState) {
         apis
-                .signup(ID, Nickname, PWD, Check)
+                .signup(ID, Nickname, PWD)
                 .then((res) => {
                     history.push('/login')
                 })

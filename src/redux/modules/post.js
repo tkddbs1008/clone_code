@@ -10,10 +10,13 @@ import axios from "axios";
 const ADD_POST = "ADD_POST";
 const GET_POST = "GET_POST";
 const DELETE = "DELETE"
+const MY_LIST = "MY_LIST"
+
 
 //action creator
 const addPost = createAction(ADD_POST, (post) => ({post}));
-const getPost = createAction(GET_POST, (post_list, paging) => ({post_list, paging}));
+const getPost = createAction(GET_POST, (post_list) => ({post_list}));
+const getMine = createAction(MY_LIST, (post) => ({post}));
 // const deletePost = createAction(DELETE, (post_id) => ({post_id}))
 
 
@@ -22,11 +25,12 @@ const getPost = createAction(GET_POST, (post_list, paging) => ({post_list, pagin
 const initialState = {
     list: [],
     is_loading: false,
+    mylist: [],
 }
 
 
 //thunk
-const getPostDB = (loadPost) => {
+const getPostDB = () => {
     return async function (dispatch, getState) {
         const postlist = getState().post.list.length
         try {
@@ -38,17 +42,6 @@ const getPostDB = (loadPost) => {
     }
 }
 
-const getmyPost = (id) => {
-    return function (dispatch) {
-        apis
-                        .myPost(id)
-                        .then((res) =>{
-                            console.log(res.data)
-                        }).catch((err) => {
-                            alert(err)
-                        })
-    }
-}
 
 const addPostDB = (content, image, token) => {
 
@@ -168,7 +161,6 @@ const actionCreators = {
     deletePostDB,
     favPost,
     unfavPost,
-    getmyPost,
 }
 
 export {actionCreators}

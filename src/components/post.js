@@ -32,7 +32,8 @@ const Post = (props) => {
     const handleChange = (e) => {
     setChecked(e.target.checked);
     };
-    if(!props.user){
+
+    if(!props){
       return;
     }
 
@@ -42,7 +43,7 @@ const Post = (props) => {
           <div>
             <PostHeader>
               <CommentImg />
-              <Commentname>{props?.user?.nickname}</Commentname>
+              <Commentname>{props?.userResponseDto?.nickname}</Commentname>
               <IconButton sx={{ marginLeft: "auto", marginRight: "13px" }}>
                 <MoreHorizIcon />
               </IconButton>
@@ -113,12 +114,12 @@ const Post = (props) => {
           </div>
           <div>
             <LikeUsers>
-              <strong>{props.user.nickname}</strong>님 <strong>외 1명</strong>이 좋아합니다.
+              <strong>{props.userResponseDto.nickname}</strong>님 <strong>외 1명</strong>이 좋아합니다.
             </LikeUsers>
           </div>
           <div>
             <LikeUsers>
-              <strong>{props.user.nickname}</strong>{props.content}
+              <strong>{props.userResponseDto.nickname}</strong>{props.content}
             </LikeUsers>
           </div>
           <div>

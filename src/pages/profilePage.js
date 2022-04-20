@@ -14,22 +14,26 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { actionCreators as postActions } from '../redux/modules/post';
+import { actionCreators as commentActions } from '../redux/modules/comment';
 
 //components
 import EditModal from '../components/EditModal';
+import Comment from '../redux/modules/comment';
 
 
 const ProfilePage = (props) => {
-  const post_list = useSelector((state)=> state.post.list)
+  const post_list = useSelector((state)=> state.post.mylist)
   const user_info = useSelector((state) => state.user.user)
   const dispatch = useDispatch();
   const param = useParams();
   const user = param.user
   const post = param.post
   const nav = useNavigate();
-  const [CommentData, setComment] = React.useState();
+  const [CommentData, setComment] = React.useState('');
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     nav(`/profile/${user}/`);
     setOpen(false);
@@ -40,13 +44,13 @@ const ProfilePage = (props) => {
 
     React.useEffect(() => {
         dispatch(postActions.getmyPost(user))
-    })
+    }, [])
 
   const handleChange = (event) => {
   setComment(event.target.value);
     };
 
-    if(!user_info){
+    if(!user_info && !post_list){
         return;
     }
 
@@ -56,11 +60,11 @@ const ProfilePage = (props) => {
             <Boxx>
                 <header>
                     <div>
-                        <ProfileImg style={{backgroundImage: `url(${user_info.profilePic})`}}/>
+                        <ProfileImg style={{backgroundImage: `url(${user_info?.profilePic})`}}/>
                     </div>
                     <div>
                         <grid>
-                            <h1>{user_info.nickname}</h1>
+                            <h1>{user_info?.nickname}</h1>
                              <div>
                                 <Button onClick={()=> nav("/profileEdit")}>Edit profile</Button>
                             </div>
@@ -69,14 +73,14 @@ const ProfilePage = (props) => {
                 </header>
                 <ImageList sx={{ maxWidth: 970 }} cols={3} gap={40}>
                     {post_list?.map((item, idx) => (
-                        <ImageListItem key={item.idx}>
+                        <ImageListItem key={item.id}>
                             <ImageButton onClick={() => {nav(`/profile/${user}/${idx}`); handleOpen()} }>
-                                <img
-                                src={`${item.img}?w=293&h=293&fit=crop&auto=format`}
-                                srcSet={`${item.img}?w=293&h=293&fit=crop&auto=format&dpr=2 2x`}
-                                alt={item.title}
-                                loading="lazy"
-                                />
+                                <div  style={{
+                                    backgroundImage: `url(${item.imageUrl})`,
+                                    width: "293px",
+                                    height: "293px",
+                                    backgroundSize: "cover"
+                                }} />
                             </ImageButton>
                         </ImageListItem>
                     ))}
@@ -91,7 +95,7 @@ const ProfilePage = (props) => {
                 >
                     <Box sx={style}>
                     <PostImgContainer>
-                      <PostImg style={{backgroundImage: `url(${post_list[post]?.img})`}}/>
+                      <PostImg style={{backgroundImage: `url(${post_list[post]?.imageUrl})`}}/>
                     </PostImgContainer>
                     <PostContent>
                         <PostHeader>
@@ -99,13 +103,23 @@ const ProfilePage = (props) => {
                             <Commentname>username</Commentname>
                             <EditModal/>
                         </PostHeader>
+                        {post_list[post]?.comment?.map((el, idx) => {
+                            return (
+                                <div key={idx} style={{height: "50px", display: "flex", marginTop: "13px"}}>
+                                    <CommentImg/>
+                                    <Commentname>{el.nickname}<CommentDate>{el.createdAt}</CommentDate></Commentname>
+                                    <Cmnt>{el.content}</Cmnt>
+                                    <button onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</button>
+                                </div>
+                            )
+                        })}
                             <CommentWrite>
                                 <SentimentSatisfiedAltIcon sx={{marginLeft: "13px"}}/>
                                 <div style={{width: "100%"}}>
-                                    <CommentBox placeholder='Add a comment...'/>
+                                    <CommentBox value={CommentData} onChange={handleChange} placeholder='Add a comment...'/>
                                 </div>
                                 <div style={{marginLeft: "auto", marginRight: "13px"}}>
-                                    <Send onClick={() => console.log('clicked')}><b>Post</b></Send>
+                                    <Send onClick={() => dispatch(commentActions.addCommentDB(post_list[post].id, CommentData))}><b>Post</b></Send>
                                 </div>
                             </CommentWrite>
                     </PostContent>
@@ -116,6 +130,18 @@ const ProfilePage = (props) => {
     );
 }
 
+const CommentDate = styled('span') ({
+fontSize: "12px",
+color: "#B7BBBD",
+padding: "0px",
+margin: "0px",
+marginTop: "10px"
+})
+
+const Cmnt = styled('p') ({
+fontSize: "15px",
+margin: "0px 3px 0px 5px"
+})
 
 const Send = styled('button') ({
 border: "0px",
