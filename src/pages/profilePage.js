@@ -13,7 +13,7 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user';
-import { actionCreators as postActions } from '../redux/modules/post';
+import { actionsCreators as profActions } from '../redux/modules/profile';
 import { actionCreators as commentActions } from '../redux/modules/comment';
 
 //components
@@ -22,8 +22,8 @@ import Comment from '../redux/modules/comment';
 
 
 const ProfilePage = (props) => {
-  const post_list = useSelector((state)=> state.post.mylist)
-  const user_info = useSelector((state) => state.user.user)
+  const post_list = useSelector((state)=> state.profile.list)
+  const user_info = useSelector((state) => state.profile.data)
   const dispatch = useDispatch();
   const param = useParams();
   const user = param.user
@@ -43,7 +43,7 @@ const ProfilePage = (props) => {
     }, [])
 
     React.useEffect(() => {
-        dispatch(postActions.getmyPost(user))
+        dispatch(profActions.getProfData(user))
     }, [])
 
   const handleChange = (event) => {
@@ -60,7 +60,7 @@ const ProfilePage = (props) => {
             <Boxx>
                 <header>
                     <div>
-                        <ProfileImg style={{backgroundImage: `url(${user_info?.profilePic})`}}/>
+                        <ProfileImg style={{backgroundImage: `url(${user_info?.progfileImg})`}}/>
                     </div>
                     <div>
                         <grid>
