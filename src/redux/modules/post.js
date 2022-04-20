@@ -27,10 +27,10 @@ const initialState = {
 
 //thunk
 const getPostDB = (loadPost) => {
-    console.log(loadPost)
     return async function (dispatch, getState) {
+        const postlist = getState().post.list.length
         try {
-            const { data } = await apis.posts(loadPost)
+            const { data } = await apis.posts(postlist)
             dispatch(getPost(data));
         } catch {
             console.log("왠지 모르지만 불러올수 없넹")
@@ -38,6 +38,17 @@ const getPostDB = (loadPost) => {
     }
 }
 
+const getmyPost = (id) => {
+    return function (dispatch) {
+        apis
+                        .myPost(id)
+                        .then((res) =>{
+                            console.log(res.data)
+                        }).catch((err) => {
+                            alert(err)
+                        })
+    }
+}
 
 const addPostDB = (content, image, token) => {
 
@@ -136,7 +147,7 @@ export default handleActions({
     }),
     [GET_POST]: (state, action) => produce(state, (draft) => {
         draft.list.push(...action.payload.post_list)
-        draft.list = draft.list.reverse().reduce((acc, cur) => {
+        draft.list = draft.list.reduce((acc, cur) => {
           if (acc.findIndex((a) => a.postid === cur.postid) === -1) {
             return [...acc, cur];
           } else {
@@ -157,6 +168,7 @@ const actionCreators = {
     deletePostDB,
     favPost,
     unfavPost,
+    getmyPost,
 }
 
 export {actionCreators}

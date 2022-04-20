@@ -11,17 +11,18 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as userActions } from '../redux/modules/user';
+import { actionCreators as postActions } from '../redux/modules/post';
 
 //components
 import EditModal from '../components/EditModal';
 
 
-
 const ProfilePage = (props) => {
   const post_list = useSelector((state)=> state.post.list)
-  console.log(post_list)
+  const user_info = useSelector((state) => state.user.user)
+  const dispatch = useDispatch();
   const param = useParams();
   const user = param.user
   const post = param.post
@@ -33,14 +34,21 @@ const ProfilePage = (props) => {
     nav(`/profile/${user}/`);
     setOpen(false);
   }
+   React.useEffect(() => {
+      dispatch(userActions.loginCheck())
+    }, [])
 
-  React.useEffect(() => {
-
-  })
+    React.useEffect(() => {
+        dispatch(postActions.getmyPost(user))
+    })
 
   const handleChange = (event) => {
   setComment(event.target.value);
     };
+
+    if(!user_info){
+        return;
+    }
 
     return (
         <div>
@@ -48,13 +56,13 @@ const ProfilePage = (props) => {
             <Boxx>
                 <header>
                     <div>
-                        <ProfileImg/>
+                        <ProfileImg style={{backgroundImage: `url(${user_info.profilePic})`}}/>
                     </div>
                     <div>
                         <grid>
-                            <h1>Username</h1>
+                            <h1>{user_info.nickname}</h1>
                              <div>
-                                <Button>Edit profile</Button>
+                                <Button onClick={()=> nav("/profileEdit")}>Edit profile</Button>
                             </div>
                         </grid>
                     </div>
@@ -187,6 +195,7 @@ width: "150px",
 height: "150px",
 background: "#62676A",
 borderRadius: "75px",
+backgroundSize: "150px"
 })
 
 const Boxx = styled(Box) ({

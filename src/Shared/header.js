@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = (props) => {
     const dispatch = useDispatch();
-
+    const userid = useSelector((state)=> state.user.user.userid)
     const token = document.cookie.split('=')[1]
     //게시물 정보
     const [ImgFile, setImgFile] = React.useState('')
@@ -86,7 +86,7 @@ const Header = (props) => {
                 <IconButton>
                     <FavoriteBorderIcon sx={{color: "black"}}/>
                 </IconButton>
-                <IconButton onClick={()=> nav('/profile/1')} sx={{color: "black"}}>
+                <IconButton onClick={()=> nav(`/profile/${userid}`)} sx={{color: "black"}}>
                     <CircleOutlinedIcon />
                 </IconButton>
             </div>

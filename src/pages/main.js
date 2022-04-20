@@ -7,57 +7,41 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import Post from "../components/post";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
+import InfinityScroll from "../components/infinityScroll";
+import Spinner from "../elements/Spinner";
 
 const Main = (props) => {
     const dispatch = useDispatch();
+    const is_loading = useSelector((state) => state.post.is_loading);
     const post_list = useSelector((state) => state.post.list)
-    // const [isLoaded, setIsLoading] = React.useState(false);
-    // const [target, setTarget] = React.useState(null)
-    // const [postlist, setPostList] = React.useState(0)
     React.useEffect(() => {
       dispatch(userActions.loginCheck())
     }, [])
 
-    // const onIntersect = async ([entry], observer) => {
-    // if (entry.isIntersecting && !isLoaded) {
-    //   observer.unobserve(entry.target);
-    //   setIsLoading(true);
-    //   setPostList(post_list.length)
-    //   setIsLoading(false);
-    //   observer.observe(entry.target);
-    // }
-    // };
-
-    // React.useEffect(() => {
-    // let observer;
-    // if (target) {
-    //   observer = new IntersectionObserver(onIntersect, {
-    //     threshold: 1,
-    //   });
-    //   observer.observe(target);
-    // }
-    // return () => observer && observer.disconnect();
-    // }, [target]);
-
     React.useEffect(() => {
-      dispatch(postActions.getPostDB(post_list.length))
+      if(post_list.length === 0){
+        dispatch(postActions.getPostDB(0))
+      }
     }, [])
 
     if(!post_list){
-        return;
+        return <Spinner/>
     }
 
   return (
     <React.Fragment>
       <Header />
-      {post_list.map((el,idx) => {
-          return (
-                <Post key={el.idx} {...el}/>
-          )
-      })}
-      {/* <div ref={setTarget} className="Target-Element">
-          {isLoaded && <Loader />}
-      </div> */}
+      <InfinityScroll
+        callNext={() => dispatch(postActions.getPostDB(`${post_list.length}`))}
+        is_next={post_list.length ? true : false}
+        loading={is_loading}
+      >
+        {post_list.map((el,idx) => {
+            return (
+                  <Post key={idx} {...el}/>
+            )
+        })}
+      </InfinityScroll>
     </React.Fragment>
   );
 };

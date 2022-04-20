@@ -21,10 +21,10 @@ export const apis = {
 	// post
 	del: (id) => api.delete(`api/posts/${id}`),
 	posts: (loadPost) => api.get(`/api/posts/${loadPost}`),
-	post: (id) => api.get(`/api/posts/${id}`, id),
+	post: (id) => api.get(`/api/profile/${id}`, id),
 	fav: (id) => api.post(`/api/like/${id}`),
 	unfav: (id) => api.delete(`/api/like/${id}`),
-
+	myPost: (id) => api.get(`/api/posts/${id}`),
 
 	// comment
 	addComment: (postid, content) => api.post('/api/comment', {

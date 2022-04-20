@@ -42,9 +42,6 @@ const loginDB = (username, password) => {
                     setCookie('token', auth, 3);
 				    localStorage.setItem('username', username);
                     // dispatch(setUser({username: username}));
-                        dispatch(setUser({
-                            username: username,
-                        }))
                         history.push('/')
                     })
                 .catch((err) => {
@@ -61,6 +58,7 @@ const loginCheck = () => {
                             dispatch(setUser({
                             nickname: res.data.nickname,
                             profilePic: res.data.profile,
+                            userid: res.data.id
                         }))
                         })
                         .catch((err)=>{

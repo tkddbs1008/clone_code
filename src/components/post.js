@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
 import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
@@ -62,8 +62,8 @@ const Post = (props) => {
                 checked={checked}
                 onChange={handleChange}
                 onClick={() => dispatch(postActions.unfavPost(props.postid))}
-                icon={<FavoriteIcon />}
-                inputProps={{ 'aria-label': 'controlled' }}
+                icon={<Favorite />}
+                checkedIcon={<FavoriteBorderTwoToneIcon />}
               />
               :
               <Checkbox
@@ -71,7 +71,7 @@ const Post = (props) => {
                 onChange={handleChange}
                 onClick={()=> dispatch(postActions.favPost(props.postid))}
                 icon={<FavoriteBorderTwoToneIcon />}
-                inputProps={{ 'aria-label': 'controlled' }}
+                checkedIcon={<Favorite />}
               />)
               :
               (checked === false ?
@@ -80,15 +80,15 @@ const Post = (props) => {
                 onChange={handleChange}
                 onClick={()=> dispatch(postActions.favPost(props.postid))}
                 icon={<FavoriteBorderTwoToneIcon />}
-                inputProps={{ 'aria-label': 'controlled' }}
+                checkedIcon={<Favorite />}
               />
               :
               <Checkbox
                 checked={checked}
                 onChange={handleChange}
                 onClick={() => dispatch(postActions.unfavPost(props.postid))}
-                icon={<FavoriteIcon />}
-                inputProps={{ 'aria-label': 'controlled' }}
+                icon={<Favorite />}
+                checkedIcon={<FavoriteBorderTwoToneIcon />}
               />)
               }
               {/* {props.myLike ?
