@@ -68,22 +68,22 @@ const ProfilePage = (props) => {
                                      <p style={{margin: "0px", fontSize: "24px"}}>{user_info?.nickname}</p>
                                 </div>
                                 <div>
-                                    <Button onClick={()=> nav("/profileEdit")}>Edit profile</Button>
+                                    <Edit onClick={()=> nav("/profileEdit")}>Edit profile</Edit>
                                 </div>
                             </div>
-                            <div style={{display: "flex"}}>
+                            <div style={{display: "flex", margin: ""}}>
                                 <div>
-                                    posts
+                                    <p style={{margin: "10px"}}>{user_info.postCnt} posts</p>
                                 </div>
                                 <div>
-                                    followers
+                                    <p style={{margin: "10px"}}>{user_info.userFollowerCnt} followers</p>
                                 </div>
                                 <div>
-                                    following
+                                    <p style={{margin: "10px"}}>{user_info.userFollowingCnt} following</p>
                                 </div>
                             </div>
-                             <div>
-                                nickname
+                             <div style={{marginTop: "16px"}}>
+                                <b>nickname</b>
                             </div>
                     </div>
                 </header>
@@ -145,6 +145,12 @@ const ProfilePage = (props) => {
         </div>
     );
 }
+
+
+const Edit = styled(Button) ({
+border: "1px solid",
+marginLeft: "16px"
+})
 
 const CommentDate = styled('span') ({
 fontSize: "12px",
