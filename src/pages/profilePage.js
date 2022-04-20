@@ -65,7 +65,7 @@ const ProfilePage = (props) => {
                     <div style={{height: "150px", width: "613px"}}>
                             <div style={{display: "flex"}}>
                                 <div>
-                                     <p style={{margin: "0px", fontSize: "24px"}}>{user_info?.nickname}</p>
+                                     <p style={{margin: "0px 0px 0px 10px", fontSize: "24px"}}>{user_info?.nickname}</p>
                                 </div>
                                 <div>
                                     <Edit onClick={()=> nav("/profileEdit")}>Edit profile</Edit>
@@ -82,11 +82,14 @@ const ProfilePage = (props) => {
                                     <p style={{margin: "10px"}}>{user_info.userFollowingCnt} following</p>
                                 </div>
                             </div>
-                             <div style={{marginTop: "16px"}}>
+                             <div style={{margin: "16px 0px 0px 10px"}}>
                                 <b>nickname</b>
                             </div>
                     </div>
                 </header>
+                <Divider>
+
+                </Divider>
                 <ImageList sx={{ maxWidth: 970 }} cols={3} gap={40}>
                     {post_list?.map((item, idx) => (
                         <ImageListItem key={item.id}>
@@ -146,6 +149,10 @@ const ProfilePage = (props) => {
     );
 }
 
+const Divider = styled('div') ({
+height: "80px",
+border: "1px solid"
+})
 
 const Edit = styled(Button) ({
 border: "1px solid",

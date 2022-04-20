@@ -25,6 +25,8 @@ import FilledInput from '@mui/material/FilledInput';
 const Signup = (props) => {
     const dispatch = useDispatch();
     const nav = useNavigate();
+
+    //data useState
     const [ID, setID] = React.useState('')
     const [Nickname, setNickname] = React.useState('')
     const [PWD, setPWD] = React.useState('')
@@ -33,15 +35,11 @@ const Signup = (props) => {
         showPassword: false,
     });
 
-    const handleID = (e) => {
-        setID(e.target.value);
-    };
-    const handleName = (e) => {
-        setNickname(e.target.value);
-    };
-    const handlePWD = (e) => {
-        setPWD(e.target.value);
-    };
+    //data status
+    const [idCheck, setidCheck] = React.useState(false);
+    const [nameCheck, setnameCheck] = React.useState(false);
+    const [pwdCheck, setpwdCheck] = React.useState(false);
+
     const handleChange = (prop) => (event) => {
         setCheck({ ...Check, [prop]: event.target.value });
     };
@@ -56,11 +54,24 @@ const Signup = (props) => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
-    const SignUp = () => {
-        dispatch(userActions.registerDB(ID, Nickname, PWD, Check.password))
+    const IdCheck = (e) => {
+        const regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,19}$/
+        setID(e.target.value)
+        setidCheck(regExp.test(e.target.value))
     }
-
+    const nicknameCheck = (e) => {
+        const regExp = /^[가-힣a-zA-Z].{3,}$/
+        setNickname(e.target.value)
+        setnameCheck(regExp.test(e.target.value))
+    }
+    const passwordCheck = (e) => {
+        const regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,}$/
+        setPWD(e.target.value)
+        setpwdCheck(regExp.test(e.target.value))
+    }
+    const SignUp = () => {
+        dispatch(userActions.registerDB(ID, Nickname, PWD))
+    }
     return (
         <Boxx>
             <Card sx={{border: "1px solid #e2e2e1", borderRadius: "0px"}}>
@@ -74,13 +85,25 @@ const Signup = (props) => {
                         </Side>
                     </Div>
                     <Div>
-                        <TextInput label="ID" variant="filled" value={ID} onChange={handleID}/>
+                        {idCheck === true ?
+                        <TextInput label="ID" variant="filled" value={ID} onChange={IdCheck}/>
+                        :
+                        <TextInput label="ID" variant="filled" value={ID} error onChange={IdCheck}/>
+                        }
                     </Div>
                     <Div>
-                        <TextInput label="Nickname" variant="filled" value={Nickname} onChange={handleName}/>
+                        {nameCheck === true?
+                        <TextInput label="Nickname" variant="filled" value={Nickname} onChange={nicknameCheck}/>
+                        :
+                        <TextInput label="Nickname" variant="filled" value={Nickname} error onChange={nicknameCheck}/>
+                        }
                     </Div>
                     <Div>
-                        <TextInput label="Password" variant="filled" type="password" value={PWD}  onChange={handlePWD}/>
+                        {pwdCheck === true?
+                        <TextInput label="Password" variant="filled" type="password" value={PWD}  onChange={passwordCheck}/>
+                        :
+                        <TextInput label="Password" variant="filled" type="password" value={PWD} error onChange={passwordCheck}/>
+                        }
                     </Div>
                     <Div>
                         <FormControl variant="filled">
@@ -91,7 +114,7 @@ const Signup = (props) => {
                                     backgroundColor: "transparent"
                                 },
                                 "& Mui-focused": {
-                                            backgroundColor: "transparent"
+                                    backgroundColor: "transparent"
                                 },
                                     }}
                                 type={Check.showPassword ? 'text' : 'password'}
@@ -114,7 +137,11 @@ const Signup = (props) => {
                         </FormControl>
                     </Div>
                     <Div>
+                        {PWD === Check.password && pwdCheck === true ?
                         <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained" onClick={SignUp}>Sign up</Button>
+                        :
+                        <Button sx={{width: "270px", height: "30px", textTransform: "none"}} variant="contained" disabled onClick={SignUp}>Sign up</Button>
+                        }
                     </Div>
                 </CardContent>
             </Card>

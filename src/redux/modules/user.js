@@ -69,7 +69,7 @@ const loginCheck = () => {
 
 const logOutDB = () => {
 	return function (dispatch, getState) {
-		deleteCookie("token");
+		deleteCookie('token');
 		localStorage.removeItem('username');
 		dispatch(logOut());
 		history.replace('/login');

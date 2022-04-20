@@ -13,7 +13,7 @@ import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Favorite from '@mui/icons-material/Favorite';
-import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
 import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 import BookmarkBorderTwoToneIcon from "@mui/icons-material/BookmarkBorderTwoTone";
@@ -56,50 +56,20 @@ const Post = (props) => {
           </div>
           <div>
             <MiddleButtons>
-              {props.myLike ?
-              (checked === true ?
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                onClick={() => dispatch(postActions.unfavPost(props.postid))}
-                icon={<Favorite />}
-                checkedIcon={<FavoriteBorderTwoToneIcon />}
-              />
-              :
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                onClick={()=> dispatch(postActions.favPost(props.postid))}
-                icon={<FavoriteBorderTwoToneIcon />}
-                checkedIcon={<Favorite />}
-              />)
-              :
-              (checked === false ?
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                onClick={()=> dispatch(postActions.favPost(props.postid))}
-                icon={<FavoriteBorderTwoToneIcon />}
-                checkedIcon={<Favorite />}
-              />
-              :
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                onClick={() => dispatch(postActions.unfavPost(props.postid))}
-                icon={<Favorite />}
-                checkedIcon={<FavoriteBorderTwoToneIcon />}
-              />)
-              }
               {/* {props.myLike ?
+              <Checkbox icon={<Favorite />} checkedIcon={<FavoriteBorder />} />
+              :
+              <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+              } */}
+              {props.myLike ?
                 <IconButton onClick={() => dispatch(postActions.unfavPost(props.postid))}>
-                  <FavoriteIcon/>
+                  <Favorite/>
                 </IconButton>
               :
               <IconButton onClick={()=> dispatch(postActions.favPost(props.postid))}>
-                <FavoriteBorderTwoToneIcon />
+                <FavoriteBorder/>
               </IconButton>
-              } */}
+              }
               <IconButton onClick={detailOpen}>
                 <ChatBubbleOutlineTwoToneIcon />
               </IconButton>
