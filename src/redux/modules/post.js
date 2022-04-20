@@ -9,11 +9,11 @@ import axios from "axios";
 //action
 const ADD_POST = "ADD_POST";
 const GET_POST = "GET_POST";
-// const DELETE = "DELETE"
+const DELETE = "DELETE"
 
 //action creator
 const addPost = createAction(ADD_POST, (post) => ({post}));
-const getPost = createAction(GET_POST, (post_list) => ({post_list}));
+const getPost = createAction(GET_POST, (post_list, paging) => ({post_list, paging}));
 // const deletePost = createAction(DELETE, (post_id) => ({post_id}))
 
 
@@ -26,16 +26,18 @@ const initialState = {
 
 
 //thunk
-const getPostDB = () => {
+const getPostDB = (loadPost) => {
+    console.log(loadPost)
     return async function (dispatch, getState) {
         try {
-            const { data } = await apis.posts();
+            const { data } = await apis.posts(loadPost)
             dispatch(getPost(data));
         } catch {
             console.log("왠지 모르지만 불러올수 없넹")
         }
     }
 }
+
 
 const addPostDB = (content, image, token) => {
 
@@ -134,7 +136,7 @@ export default handleActions({
     }),
     [GET_POST]: (state, action) => produce(state, (draft) => {
         draft.list.push(...action.payload.post_list)
-        draft.list = draft.list.reduce((acc, cur) => {
+        draft.list = draft.list.reverse().reduce((acc, cur) => {
           if (acc.findIndex((a) => a.postid === cur.postid) === -1) {
             return [...acc, cur];
           } else {
@@ -143,9 +145,9 @@ export default handleActions({
           }
         }, []);
     }),
-    // [DELETE]: (state, action) => produce(state, (draft) => {
-    //     draft.list = draft.list.filter((l) => l.postid !== action.payload.post_id);
-    // }),
+    [DELETE]: (state, action) => produce(state, (draft) => {
+        draft.list = draft.list.filter((l) => l.postid !== action.payload.post_id);
+    }),
 }, initialState)
 
 const actionCreators = {

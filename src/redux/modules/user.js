@@ -19,6 +19,7 @@ const initialState = {
 
 
 //thunk
+
 const registerDB = (ID, Nickname, PWD, Check) => {
     return function (dispatch, getState) {
         apis
@@ -40,14 +41,33 @@ const loginDB = (username, password) => {
                     const auth = res.headers.authorization.split(" ")[1]
                     setCookie('token', auth, 3);
 				    localStorage.setItem('username', username);
-                    dispatch(setUser({username: username}));
-                    history.push('/')
-                })
+                    // dispatch(setUser({username: username}));
+                        dispatch(setUser({
+                            username: username,
+                        }))
+                        history.push('/')
+                    })
                 .catch((err) => {
                     window.alert('없는 회원정보 입니다! 회원가입을 해주세요!')
                 });
     };
 };
+
+const loginCheck = () => {
+    return async function (dispatch, getState) {
+        await apis
+                        .islogin()
+                        .then((res) =>{
+                            dispatch(setUser({
+                            nickname: res.data.nickname,
+                            profilePic: res.data.profile,
+                        }))
+                        })
+                        .catch((err)=>{
+                            alert(err, "로그인 안됭")
+                        })
+    }
+}
 
 const logOutDB = () => {
 	return function (dispatch, getState) {
@@ -76,6 +96,7 @@ const actionCreators = {
     registerDB,
     loginDB,
     logOutDB,
+    loginCheck,
 };
 
 export { actionCreators };

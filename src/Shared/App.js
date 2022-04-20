@@ -7,6 +7,7 @@ import Signup from '../pages/signup'
 import Login from '../pages/login';
 import ProfilePage from '../pages/profilePage';
 import Main from '../pages/main';
+import ProfileEdit from '../pages/ProfileEdit';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/profile/:user/" element={<ProfilePage/>}>
           <Route path=":post/" element={<ProfilePage/>} />
         </Route>
+        <Route path="/profileEdit" element={<ProfileEdit/>}/>
       </Routes>
     </div>
   );

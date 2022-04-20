@@ -20,7 +20,7 @@ api.interceptors.request.use(function (config) {
 export const apis = {
 	// post
 	del: (id) => api.delete(`api/posts/${id}`),
-	posts: () => api.get('/api/posts'),
+	posts: (loadPost) => api.get(`/api/posts/${loadPost}`),
 	post: (id) => api.get(`/api/posts/${id}`, id),
 	fav: (id) => api.post(`/api/like/${id}`),
 	unfav: (id) => api.delete(`/api/like/${id}`),
@@ -44,5 +44,5 @@ export const apis = {
 			password: PWD,
 			passwordCheck: Check,
 		}),
-	loginCheck: () => api.get('/api/isLogin'),
+	islogin: () => api.get('/api/islogin'),
 };

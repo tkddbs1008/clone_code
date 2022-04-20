@@ -34,7 +34,10 @@ const Header = (props) => {
     const [open, setOpen] = React.useState(false);
     const nav = useNavigate();
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        window.location.reload()
+    }
     const preview = useSelector((state) => state.image.preview)
     const reader = new FileReader();
     const hidden = React.useRef(null);
@@ -59,6 +62,7 @@ const Header = (props) => {
     const Send = () => {
         dispatch(postActions.addPostDB(value, ImgFile, token))
         handleClose();
+        // window.location.reload()
     }
 
     return (
@@ -101,8 +105,12 @@ const Header = (props) => {
                 >
                     <Box sx={stylee}>
                         <PostWrites>
-                            <b style={{fontWeight: "500" }}>Create new post</b>
-                            <button onClick={Send}>Share</button>
+                            <div style={{width: "90%", display: "flex", justifyContent: "center", marginLeft: "5%"}}>
+                                <b style={{fontWeight: "500"}}>Create new post</b>
+                            </div>
+                            <div style={{marginLeft: "auto"}}>
+                                <button style={{border: "0px", background: "transparent", color: "#0095f6",  marginRight: "16px"}} onClick={Send}><Share>Share</Share></button>
+                            </div>
                         </PostWrites>
                         <div style={{display: "flex"}}>
                         <PostImgContainer style={{backgroundImage: `url(${preview})`}} />
@@ -111,14 +119,17 @@ const Header = (props) => {
                                 <CommentImg/>
                                 <Commentname>username</Commentname>
                             </PostHeader>
-                             <TextField
+                             <textarea
                                 id="standard-multiline-static"
-                                label="Multiline"
-                                multiline
-                                rows={4}
+                                placeholder='Write a caption...'
+                                rows={10}
                                 value={value}
                                 variant="standard"
                                 onChange={handleChange}
+                                style={{width: "inherit", padding: "0px 16px",
+                                        border: "0px", resize: "none", outline: "none",
+                                        fontFamily: "inherit", borderBottom: "1px solid #e2e2e1"
+                                }}
                             />
                         </PostContent>
                         </div>
@@ -130,7 +141,7 @@ const Header = (props) => {
                         <b style={{fontWeight: "500" }}>Create new post</b>
                     </PostWrites>
                     <Content>
-                        <img alt='placehold' src={InsertFile} />
+                        <img style={{marginTop: "235px"}} alt='placehold' src={InsertFile} />
                         <p style={{fontSize: "21px"}}>Drag photos and videos here</p>
                         <input type="file" onChange={selectFile} ref={hidden} id="fileUpload" accept="image/jpeg, image/png, image/jpg" style={{display: "none"}}/>
                         <Submit onClick={handleClick}>Select from computer</Submit>
@@ -142,6 +153,13 @@ const Header = (props) => {
 
     )
 }
+
+const Share = styled('p') ({
+fontWeight: "600",
+"&:hover": {
+    cursor: "pointer"
+}
+})
 
 const Submit = styled('button') ({
 width: "157px",
@@ -211,16 +229,15 @@ borderBottom: "1px solid #e2e2e1"
 })
 
 const PostImgContainer = styled('div') ({
-minWidth: "350px",
-maxWidth: "50%",
-minHeight: "350px",
-maxHeight: "100%",
+minWidth: "50%",
+minHeight: "500px",
 backgroundColor: "black",
 backgroundSize: "contain",
 backgroundPosition: "center",
 backgroundRepeat: "no-repeat",
 margin: "0px",
-display: "flex"
+display: "flex",
+borderRadius: "0px 0px 0px 15px"
 })
 
 const PostHeader = styled('div') ({
@@ -245,7 +262,7 @@ marginLeft: "13px"
 })
 
 const PostContent = styled('div') ({
-width: "300px",
+width: "-webkit-fill-available",
 })
 
 const stylee = {
@@ -255,7 +272,7 @@ const stylee = {
   transform: 'translate(-50%, -50%)',
   width: "80%",
   bgcolor: 'background.paper',
-  height: "82%",
+  height: "auto",
   borderRadius: "15px"
 };
 

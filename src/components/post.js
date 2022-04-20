@@ -1,7 +1,13 @@
 import React from "react";
 
+//components
+import PostDetail from "./PostDetail";
 import Image from "../elements/Image";
 
+//
+import { useDispatch } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
+//
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
@@ -12,17 +18,22 @@ import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineT
 import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 import BookmarkBorderTwoToneIcon from "@mui/icons-material/BookmarkBorderTwoTone";
 import IconButton from "@mui/material/IconButton";
-import PostDetail from "./PostDetail";
-import { useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
+import Checkbox from '@mui/material/Checkbox';
 
 const Post = (props) => {
 
     const dispatch = useDispatch();
+    const [checked, setChecked] = React.useState(true);
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const detailOpen = () => {
       setOpen(true);
+    }
+    const handleChange = (e) => {
+    setChecked(e.target.checked);
+    };
+    if(!props.user){
+      return;
     }
 
     return (
@@ -31,7 +42,7 @@ const Post = (props) => {
           <div>
             <PostHeader>
               <CommentImg />
-              <Commentname>{props.user.nickname}</Commentname>
+              <Commentname>{props?.user?.nickname}</Commentname>
               <IconButton sx={{ marginLeft: "auto", marginRight: "13px" }}>
                 <MoreHorizIcon />
               </IconButton>
@@ -46,6 +57,41 @@ const Post = (props) => {
           <div>
             <MiddleButtons>
               {props.myLike ?
+              (checked === true ?
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                onClick={() => dispatch(postActions.unfavPost(props.postid))}
+                icon={<FavoriteIcon />}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+              :
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                onClick={()=> dispatch(postActions.favPost(props.postid))}
+                icon={<FavoriteBorderTwoToneIcon />}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />)
+              :
+              (checked === false ?
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                onClick={()=> dispatch(postActions.favPost(props.postid))}
+                icon={<FavoriteBorderTwoToneIcon />}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+              :
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                onClick={() => dispatch(postActions.unfavPost(props.postid))}
+                icon={<FavoriteIcon />}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />)
+              }
+              {/* {props.myLike ?
                 <IconButton onClick={() => dispatch(postActions.unfavPost(props.postid))}>
                   <FavoriteIcon/>
                 </IconButton>
@@ -53,7 +99,7 @@ const Post = (props) => {
               <IconButton onClick={()=> dispatch(postActions.favPost(props.postid))}>
                 <FavoriteBorderTwoToneIcon />
               </IconButton>
-              }
+              } */}
               <IconButton onClick={detailOpen}>
                 <ChatBubbleOutlineTwoToneIcon />
               </IconButton>
