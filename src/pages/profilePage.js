@@ -58,17 +58,33 @@ const ProfilePage = (props) => {
         <div>
             <Header/>
             <Boxx>
-                <header>
-                    <div>
+                <header style={{height: "150px", display: "flex"}}>
+                    <div style={{width: "291px", justifyContent: "center", display: "flex"}}>
                         <ProfileImg style={{backgroundImage: `url(${user_info?.progfileImg})`}}/>
                     </div>
-                    <div>
-                        <grid>
-                            <h1>{user_info?.nickname}</h1>
-                             <div>
-                                <Button onClick={()=> nav("/profileEdit")}>Edit profile</Button>
+                    <div style={{height: "150px", width: "613px"}}>
+                            <div style={{display: "flex"}}>
+                                <div>
+                                     <p style={{margin: "0px", fontSize: "24px"}}>{user_info?.nickname}</p>
+                                </div>
+                                <div>
+                                    <Button onClick={()=> nav("/profileEdit")}>Edit profile</Button>
+                                </div>
                             </div>
-                        </grid>
+                            <div style={{display: "flex"}}>
+                                <div>
+                                    posts
+                                </div>
+                                <div>
+                                    followers
+                                </div>
+                                <div>
+                                    following
+                                </div>
+                            </div>
+                             <div>
+                                nickname
+                            </div>
                     </div>
                 </header>
                 <ImageList sx={{ maxWidth: 970 }} cols={3} gap={40}>
@@ -100,7 +116,7 @@ const ProfilePage = (props) => {
                     <PostContent>
                         <PostHeader>
                             <CommentImg/>
-                            <Commentname>username</Commentname>
+                            <Commentname>{user_info?.nickname}</Commentname>
                             <EditModal/>
                         </PostHeader>
                         {post_list[post]?.comment?.map((el, idx) => {
@@ -230,7 +246,6 @@ height: "100%",
 padding: "30px 20px 0px",
 margin: "auto",
 background: "#F7F7F8",
-border: "1px solid black",
 })
 
 const CommentWrite = styled('div') ({

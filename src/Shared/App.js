@@ -19,7 +19,7 @@ function App() {
         <Route path="/profile/:user/" element={<ProfilePage/>}>
           <Route path=":post/" element={<ProfilePage/>} />
         </Route>
-        <Route path="/profileEdit" element={<ProfileEdit/>}/>
+        <Route path="/Edit/" element={<ProfileEdit/>}/>
       </Routes>
     </div>
   );

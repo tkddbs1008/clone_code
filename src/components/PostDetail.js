@@ -16,6 +16,7 @@ import { actionCreators as commentActions } from '../redux/modules/comment';
 
 const PostDetail = (props) => {
 
+
     const [comment, setComment] = React.useState('')
     const dispatch = useDispatch();
     const handleComment = (e) => {
@@ -34,8 +35,8 @@ const PostDetail = (props) => {
                 </PostImgContainer>
                 <PostContent>
                     <PostHeader>
-                        <CommentImg/>
-                        <Commentname>username</Commentname>
+                        <CommentImg style={{backgroundImage: `url(${props.userResponseDto.profile})`}}/>
+                        <Commentname>{props.userResponseDto.username}</Commentname>
                         <EditModal {...props} />
                     </PostHeader>
                         <div>
@@ -137,6 +138,7 @@ height: '32px',
 background: "grey",
 borderRadius: "16px",
 marginLeft: "13px",
+backgroundSize: "32px"
 })
 
 const Commentname = styled('p') ({

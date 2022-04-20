@@ -10,13 +10,12 @@ import axios from "axios";
 const ADD_POST = "ADD_POST";
 const GET_POST = "GET_POST";
 const DELETE = "DELETE"
-const MY_LIST = "MY_LIST"
+
 
 
 //action creator
 const addPost = createAction(ADD_POST, (post) => ({post}));
 const getPost = createAction(GET_POST, (post_list) => ({post_list}));
-const getMine = createAction(MY_LIST, (post) => ({post}));
 // const deletePost = createAction(DELETE, (post_id) => ({post_id}))
 
 

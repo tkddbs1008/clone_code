@@ -21,7 +21,6 @@ import IconButton from "@mui/material/IconButton";
 import Checkbox from '@mui/material/Checkbox';
 
 const Post = (props) => {
-
     const dispatch = useDispatch();
     const [checked, setChecked] = React.useState(true);
     const [open, setOpen] = React.useState(false);
@@ -42,7 +41,7 @@ const Post = (props) => {
         <Card sx={{ border: "1px solid #e2e2e1", borderRadius: "0px" }}>
           <div>
             <PostHeader>
-              <CommentImg />
+              <CommentImg style={{backgroundImage: `url(${props.userResponseDto.profile})`}}/>
               <Commentname>{props?.userResponseDto?.nickname}</Commentname>
               <IconButton sx={{ marginLeft: "auto", marginRight: "13px" }}>
                 <MoreHorizIcon />
@@ -113,20 +112,26 @@ const Post = (props) => {
             </MiddleButtons>
           </div>
           <div>
-            <LikeUsers>
+            {/* <LikeUsers>
               <strong>{props.userResponseDto.nickname}</strong>님 <strong>외 1명</strong>이 좋아합니다.
-            </LikeUsers>
+            </LikeUsers> */}
           </div>
-          <div>
-            <LikeUsers>
-              <strong>{props.userResponseDto.nickname}</strong>{props.content}
-            </LikeUsers>
-          </div>
-          <div>
-            <MoreComment>댓글 {props.comments.length}개 모두 보기</MoreComment>
-          </div>
-          <div>
-            <PostDate>{props.createdAt}</PostDate>
+          <div style={{padding: "12px"}}>
+            <div>
+              <LikeUsers>
+                <strong>{props.userResponseDto.nickname}</strong>   {props.content}
+              </LikeUsers>
+            </div>
+            <div>
+              {props.comments.length > 0 ?
+              <MoreComment>댓글 {props.comments.length}개 모두 보기</MoreComment>
+              :
+              null
+              }
+            </div>
+            <div>
+              <PostDate>{props.timeBefore}</PostDate>
+            </div>
           </div>
         </Card>
         <PostDetail {...props} open={open} setOpen={setOpen} handleClose={handleClose}/>
@@ -136,9 +141,9 @@ const Post = (props) => {
 
 
 const Boxx = styled(Box)({
-    width: "350px",
+    width: "614px",
     margin: "auto",
-    marginTop: "7%",
+    marginTop: "24px",
   });
 
   const CommentImg = styled("div")({
@@ -147,6 +152,7 @@ const Boxx = styled(Box)({
     background: "grey",
     borderRadius: "16px",
     marginLeft: "13px",
+    backgroundSize: "32px"
   });
 
   const PostHeader = styled("div")({

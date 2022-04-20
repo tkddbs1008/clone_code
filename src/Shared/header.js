@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actionsCreators as imageActions } from "../redux/modules/image";
 import { actionCreators as postActions } from "../redux/modules/post";
 //MUI
+
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
@@ -13,19 +14,18 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
+
 //Image
 import InsertFile from '../images/InsertFile.PNG'
 
 //RRD
 import { useNavigate } from 'react-router-dom';
+import MenuBox from '../elements/Menu';
 
 const Header = (props) => {
     const dispatch = useDispatch();
-    const userid = useSelector((state)=> state.user.user?.userid)
+    const user_data = useSelector((state)=> state.user.user)
     const token = document.cookie.split('=')[1]
     //게시물 정보
     const [ImgFile, setImgFile] = React.useState('')
@@ -38,14 +38,13 @@ const Header = (props) => {
         setOpen(false);
         window.location.reload()
     }
+    //이미지 미리보기
     const preview = useSelector((state) => state.image.preview)
     const reader = new FileReader();
     const hidden = React.useRef(null);
-
     const handleClick = (e) => {
         hidden.current.click();
     }
-
     const selectFile = (e) => {
         const _file = e.target.files[0];
         setImgFile(e.target.files[0])
@@ -54,27 +53,26 @@ const Header = (props) => {
                 dispatch(imageActions.setPreview(reader.result));
             }
     }
-
+    //코맨트 useState
     const handleChange = (event) => {
         setValue(event.target.value);
     };
-
     const Send = () => {
         dispatch(postActions.addPostDB(value, ImgFile, token))
         handleClose();
         // window.location.reload()
     }
 
-    if(!userid){
+
+    if(!user_data){
         return;
     }
-
     return (
         <Boxx>
             <ImageButton>
                 <ImageSrc onClick={() => nav('/')}/>
             </ImageButton>
-            <div style={{marginLeft: "auto",}}>
+            <div style={{marginLeft: "auto", display: "flex"}}>
                 <IconButton>
                     <HomeOutlinedIcon sx={{color: "black"}}/>
                 </IconButton>
@@ -90,9 +88,7 @@ const Header = (props) => {
                 <IconButton>
                     <FavoriteBorderIcon sx={{color: "black"}}/>
                 </IconButton>
-                <IconButton onClick={()=> nav(`/profile/${userid}`)} sx={{color: "black"}}>
-                    <CircleOutlinedIcon />
-                </IconButton>
+                    <MenuBox {...user_data}/>
             </div>
         <Modal
         open={open}

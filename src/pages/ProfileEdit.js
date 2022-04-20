@@ -30,7 +30,6 @@ const ProfileEdit = (props) => {
             <ProfileImg />
           </div>
           <div>
-            <grid>
               <h1>Username</h1>
               <div>
                 <input
@@ -43,7 +42,6 @@ const ProfileEdit = (props) => {
                 />
                 <Submit onClick={handleClick}>Select from computer</Submit>
             </div>
-          </grid>
         </div>
       </header>
       <div>
