@@ -1,6 +1,6 @@
 import React from "react";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PostEdit from "./PostWrite";
 
 //MUI
@@ -14,14 +14,13 @@ import { styled } from '@mui/material/styles';
 
 
 const EditModal= (props) => {
-
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const Delete = () => {
-      dispatch(postActions.deletePostDB(props.props.postid))
+      dispatch(postActions.deletePostDB(props.postid))
     }
 
     return (

@@ -2,6 +2,7 @@ import {createAction, handleActions} from "redux-actions"
 import {produce} from "immer"
 import { setCookie, deleteCookie } from "../../Shared/Cookie"
 import { apis } from "../../Shared/api"
+import axios from "axios"
 import history from "../../index"
 
 //action
@@ -76,6 +77,42 @@ const logOutDB = () => {
 	};
 };
 
+const follow = (id) => {
+    return function (dispatch) {
+        apis
+                        .follow(id)
+                        .then((res) => {
+                            alert("팔로우 함")
+                        }).catch((err) =>{
+                            console.log(err)
+                        })
+    }
+}
+
+const unfollow = (id) => {
+    return function (dispatch) {
+        apis
+                        .unfollow(id)
+                        .then((res) => {
+                            alert("언팔로함")
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+    }
+}
+
+const changeProfileDB = (file, token) => {
+  const image = new FormData();
+  image.append("multipartFile", file);
+  return function (dispatch, getState) {
+    axios.put("http://13.209.10.125/api/profile", image, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  };
+};
 
 //reducer
 export default handleActions({
@@ -95,6 +132,9 @@ const actionCreators = {
     loginDB,
     logOutDB,
     loginCheck,
+    follow,
+    unfollow,
+    changeProfileDB,
 };
 
 export { actionCreators };

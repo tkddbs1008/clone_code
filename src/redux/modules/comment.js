@@ -8,10 +8,14 @@ import { produce } from "immer";
 //action
 const ADD_COMMENT = 'ADD_COMMENT';
 const GET_COMMENT = 'GET_COMMENT';
+const DELETE_CMNT = 'DETETE_CMNT';
+
+
 
 //action creators
-const addComment = createAction(ADD_COMMENT,(content) => ({content}));
-const getComments = createAction(GET_COMMENT,(content) => ({content}));
+const addComment = createAction(ADD_COMMENT,(content, id) => ({content, id}));
+const getComments = createAction(GET_COMMENT,(content, id) => ({content, id}));
+const deleteCmnt = createAction(DELETE_CMNT, (cmntId, postId) => ({cmntId, postId}))
 
 const initialState = {
     comments : [],
@@ -20,7 +24,6 @@ const initialState = {
 
 //thunk
 const addCommentDB = (postid, Comment) => {
-  console.log(postid, Comment)
     return function (dispatch, getState){
         console.log('댓글요청 시작')
         apis
@@ -35,7 +38,6 @@ const addCommentDB = (postid, Comment) => {
 }
 
 const deleteComment = (commentid) => {
-  console.log(commentid)
   return function (dispatch, getState) {
     apis
                         .del(commentid)

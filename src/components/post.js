@@ -19,8 +19,10 @@ import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 import BookmarkBorderTwoToneIcon from "@mui/icons-material/BookmarkBorderTwoTone";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from '@mui/material/Checkbox';
+import { useNavigate } from "react-router-dom";
 
 const Post = (props) => {
+    const nav = useNavigate();
     const dispatch = useDispatch();
     const [checked, setChecked] = React.useState(true);
     const [open, setOpen] = React.useState(false);
@@ -41,7 +43,10 @@ const Post = (props) => {
         <Card sx={{ border: "1px solid #e2e2e1", borderRadius: "0px" }}>
           <div>
             <PostHeader>
-              <CommentImg style={{backgroundImage: `url(${props.userResponseDto.profile})`}}/>
+              <CommentImg
+              onClick={() => nav(`/profile/${props?.userResponseDto?.id}`)}
+              style={{backgroundImage: `url(${props?.userResponseDto?.profile})`}}
+              />
               <Commentname>{props?.userResponseDto?.nickname}</Commentname>
               <IconButton sx={{ marginLeft: "auto", marginRight: "13px" }}>
                 <MoreHorizIcon />
@@ -56,12 +61,12 @@ const Post = (props) => {
           </div>
           <div>
             <MiddleButtons>
-              {/* {props.myLike ?
+              {props.myLike ?
               <Checkbox icon={<Favorite />} checkedIcon={<FavoriteBorder />} />
               :
               <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
-              } */}
-              {props.myLike ?
+              }
+              {/* {props.myLike ?
                 <IconButton onClick={() => dispatch(postActions.unfavPost(props.postid))}>
                   <Favorite/>
                 </IconButton>
@@ -69,7 +74,7 @@ const Post = (props) => {
               <IconButton onClick={()=> dispatch(postActions.favPost(props.postid))}>
                 <FavoriteBorder/>
               </IconButton>
-              }
+              } */}
               <IconButton onClick={detailOpen}>
                 <ChatBubbleOutlineTwoToneIcon />
               </IconButton>
@@ -89,18 +94,18 @@ const Post = (props) => {
           <div style={{padding: "12px"}}>
             <div>
               <LikeUsers>
-                <strong>{props.userResponseDto.nickname}</strong>   {props.content}
+                <strong>{props?.userResponseDto?.nickname}</strong>   {props.content}
               </LikeUsers>
             </div>
             <div>
-              {props.comments.length > 0 ?
-              <MoreComment>댓글 {props.comments.length}개 모두 보기</MoreComment>
+              {props?.comments?.length > 0 ?
+              <MoreComment>댓글 {props?.comments?.length}개 모두 보기</MoreComment>
               :
               null
               }
             </div>
             <div>
-              <PostDate>{props.timeBefore}</PostDate>
+              <PostDate>{props?.timeBefore}</PostDate>
             </div>
           </div>
         </Card>

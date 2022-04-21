@@ -30,7 +30,7 @@ export const apis = {
 		postid: postid,
 		content: content
 	}),
-	del: (commentId) => api.delete(`/api/comment/${commentId}`),
+	delete: (commentId) => api.delete(`/api/comment/${commentId}`),
 	// editComment: (content, commentId) =>
 	// 	api.put(`/api/comments/${commentId}`, content),
 
@@ -43,4 +43,6 @@ export const apis = {
 			password: PWD,
 		}),
 	islogin: () => api.get('/api/islogin'),
+	follow: (id) => api.post(`/follow/${id}`),
+	unfollow: (id) => api.delete(`/follow/${id}`),
 };

@@ -77,7 +77,7 @@ const MenuBox = (props) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={()=> nav(`/profile/${props.userid}`)}>
+        <MenuItem onClick={()=> nav(`/profile/${props.userid}`,  setTimeout(() =>{window.location.reload()}, 1) )}>
           <ListItemIcon >
               <AccountCircleOutlinedIcon />
           </ListItemIcon>

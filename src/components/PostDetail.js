@@ -4,19 +4,14 @@ import EditModal from './EditModal';
 //MUI
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ButtonBase from '@mui/material/ButtonBase';
 import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { actionCreators as commentActions } from '../redux/modules/comment';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators as commentActions } from '../redux/modules/post';
 
 const PostDetail = (props) => {
 
-
+    const userid = useSelector((state) => state.user.user?.userid)
     const [comment, setComment] = React.useState('')
     const dispatch = useDispatch();
     const handleComment = (e) => {
@@ -31,23 +26,27 @@ const PostDetail = (props) => {
             >
                 <Box sx={style}>
                 <PostImgContainer>
-                    <PostImg style={{backgroundImage: `url(${props.imageUrl})`}} />
+                    <PostImg style={{backgroundImage: `url(${props?.imageUrl})`}} />
                 </PostImgContainer>
                 <PostContent>
                     <PostHeader>
-                        <CommentImg style={{backgroundImage: `url(${props.userResponseDto.profile})`}}/>
-                        <Commentname>{props.userResponseDto.username}</Commentname>
+                        <CommentImg style={{backgroundImage: `url(${props?.userResponseDto?.profile})`}}/>
+                        <Commentname>{props?.userResponseDto?.username}</Commentname>
                         <EditModal {...props} />
                     </PostHeader>
                         <div>
                         {props?.comments?.map((el, idx) => {
                             return (
-                                <div key={idx} style={{height: "50px", display: "flex", marginTop: "13px"}}>
-                                    <CommentImg/>
-                                    <Commentname>{el.nickname}<CommentDate>{el.createdAt}</CommentDate></Commentname>
-                                    <Cmnt>{el.content}</Cmnt>
-                                    <button onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</button>
-                                </div>
+                                 <div key={idx} style={{height: "50px", display: "flex", marginTop: "13px"}}>
+                                 <CommentImg/>
+                                 <Commentname>{el.nickname}<CommentDate>{el.createdAt}</CommentDate></Commentname>
+                                 <Cmnt>{el.content}</Cmnt>
+                                 {el.userid === userid ?
+                                 <Delete onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</Delete>
+                                 :
+                                 null
+                                 }
+                             </div>
                             )
                         })}
                         </div>
@@ -65,6 +64,16 @@ const PostDetail = (props) => {
             </Modal>
     )
 }
+
+const Delete = styled('button') ({
+border: "0px",
+background: "transparent",
+color: "Red",
+"&:hover":{
+    cursor: "pointer"
+},
+margin: "0px 16px 0px auto"
+})
 
 const Send = styled('button') ({
 border: "0px",

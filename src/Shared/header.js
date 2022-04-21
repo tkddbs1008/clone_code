@@ -11,7 +11,6 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
@@ -36,7 +35,6 @@ const Header = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        window.location.reload()
     }
     //이미지 미리보기
     const preview = useSelector((state) => state.image.preview)
@@ -60,7 +58,6 @@ const Header = (props) => {
     const Send = () => {
         dispatch(postActions.addPostDB(value, ImgFile, token))
         handleClose();
-        // window.location.reload()
     }
 
 

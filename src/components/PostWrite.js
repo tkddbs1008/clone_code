@@ -15,7 +15,6 @@ const PostEdit = (props) => {
 
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const [image, setImage] = React.useState();
     const [value, setValue] = React.useState();
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true);
@@ -25,7 +24,7 @@ const PostEdit = (props) => {
     };
 
     const Send = () => {
-        dispatch(postActions.updatePostDB(props.postid, value, image, token))
+        dispatch(postActions.updatePostDB(props.postid, value, token))
     }
 
   return (

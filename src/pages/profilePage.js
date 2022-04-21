@@ -14,7 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { actionsCreators as profActions } from '../redux/modules/profile';
-import { actionCreators as commentActions } from '../redux/modules/comment';
+import { actionCreators as commentActions } from '../redux/modules/post';
 
 //components
 import EditModal from '../components/EditModal';
@@ -22,8 +22,11 @@ import Comment from '../redux/modules/comment';
 
 
 const ProfilePage = (props) => {
+
+
   const post_list = useSelector((state)=> state.profile.list)
   const user_info = useSelector((state) => state.profile.data)
+  const userid = useSelector((state) => state.user.user?.userid)
   const dispatch = useDispatch();
   const param = useParams();
   const user = param.user
@@ -67,9 +70,21 @@ const ProfilePage = (props) => {
                                 <div>
                                      <p style={{margin: "0px 0px 0px 10px", fontSize: "24px"}}>{user_info?.nickname}</p>
                                 </div>
-                                <div>
-                                    <Edit onClick={()=> nav("/profileEdit")}>Edit profile</Edit>
+                                {user == userid ?
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <Edit onClick={()=> nav("/Edit")}>Edit profile</Edit>
                                 </div>
+                                :
+                                (user_info.followState === false ?
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <Follow onClick={() => dispatch(userActions.follow(user))}>팔로우 하기</Follow>
+                                </div>
+                                :
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <Follow onClick={() => dispatch(userActions.unfollow(user))}>언팔로우 하기</Follow>
+                                </div>
+                                )
+                            }
                             </div>
                             <div style={{display: "flex", margin: ""}}>
                                 <div>
@@ -88,7 +103,6 @@ const ProfilePage = (props) => {
                     </div>
                 </header>
                 <Divider>
-
                 </Divider>
                 <ImageList sx={{ maxWidth: 970 }} cols={3} gap={40}>
                     {post_list?.map((item, idx) => (
@@ -118,17 +132,21 @@ const ProfilePage = (props) => {
                     </PostImgContainer>
                     <PostContent>
                         <PostHeader>
-                            <CommentImg/>
+                            <CommentImg style={{backgroundImage: `url(${user_info.progfileImg})`, backgroundSize: "cover"}}/>
                             <Commentname>{user_info?.nickname}</Commentname>
                             <EditModal/>
                         </PostHeader>
-                        {post_list[post]?.comment?.map((el, idx) => {
+                        {post_list[post]?.comments.map((el, idx) => {
                             return (
                                 <div key={idx} style={{height: "50px", display: "flex", marginTop: "13px"}}>
                                     <CommentImg/>
                                     <Commentname>{el.nickname}<CommentDate>{el.createdAt}</CommentDate></Commentname>
                                     <Cmnt>{el.content}</Cmnt>
-                                    <button onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</button>
+                                    {el.userid === userid ?
+                                    <Delete onClick={() => dispatch(commentActions.deleteComment(el.id))}>delete</Delete>
+                                    :
+                                    null
+                                    }
                                 </div>
                             )
                         })}
@@ -138,7 +156,7 @@ const ProfilePage = (props) => {
                                     <CommentBox value={CommentData} onChange={handleChange} placeholder='Add a comment...'/>
                                 </div>
                                 <div style={{marginLeft: "auto", marginRight: "13px"}}>
-                                    <Send onClick={() => dispatch(commentActions.addCommentDB(post_list[post].id, CommentData))}><b>Post</b></Send>
+                                    <Send onClick={() => dispatch(profActions.addCommentDB(post_list[post].postid, CommentData))}><b>Post</b></Send>
                                 </div>
                             </CommentWrite>
                     </PostContent>
@@ -148,6 +166,26 @@ const ProfilePage = (props) => {
         </div>
     );
 }
+
+
+const Follow = styled('button') ({
+height: "30px",
+marginLeft: "12px",
+backgroundColor: "transparent",
+borderRadius: "5px",
+border: "1px solid",
+alignItems: "center"
+})
+
+const Delete = styled('button') ({
+border: "0px",
+background: "transparent",
+color: "Red",
+"&:hover":{
+    cursor: "pointer"
+},
+margin: "0px 16px 0px auto"
+})
 
 const Divider = styled('div') ({
 height: "80px",
@@ -168,7 +206,7 @@ marginTop: "10px"
 })
 
 const Cmnt = styled('p') ({
-fontSize: "15px",
+fontSize: "14px",
 margin: "0px 3px 0px 5px"
 })
 
